@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4EVA Tours — Lisbon Tuk-Tuk & Vintage Car Adventures</title>
+<meta name="description" content="Private tuk-tuk and vintage car tours in Lisbon. Discover hidden streets, breathtaking viewpoints and the real soul of the city with a passionate local guide.">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rainbow-1:#FF6B6B; --rainbow-2:#FFA94D; --rainbow-3:#FFD43B;
+    --rainbow-4:#69DB7C; --rainbow-5:#4DABF7; --rainbow-6:#9775FA;
+    --black:#0A0A0A; --white:#FAFAFA; --gray:#888; --light-bg:#F2F0ED;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Space Grotesk',sans-serif;background:var(--black);color:var(--white);overflow-x:hidden;}
+
+  .rainbow-line{height:4px;background:linear-gradient(90deg,var(--rainbow-1),var(--rainbow-2),var(--rainbow-3),var(--rainbow-4),var(--rainbow-5),var(--rainbow-6));position:fixed;top:0;left:0;right:0;z-index:1000;}
+
+  /* NAV */
+  nav{position:fixed;top:4px;left:0;right:0;z-index:998;padding:1rem 3rem;display:flex;justify-content:space-between;align-items:center;backdrop-filter:blur(20px);background:rgba(10,10,10,0.7);transition:all 0.3s;}
+  .nav-scrolled{padding:0.7rem 3rem;background:rgba(10,10,10,0.9);}
+  .logo{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;letter-spacing:-1px;text-decoration:none;color:var(--white);}
+  .logo span{background:linear-gradient(90deg,var(--rainbow-2),var(--rainbow-1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .nav-links{display:flex;gap:2rem;list-style:none;align-items:center;}
+  .nav-links a{color:var(--gray);text-decoration:none;font-size:0.85rem;font-weight:500;letter-spacing:1px;text-transform:uppercase;transition:color 0.3s;}
+  .nav-links a:hover{color:var(--white);}
+  .nav-book{background:linear-gradient(90deg,var(--rainbow-1),var(--rainbow-2))!important;-webkit-text-fill-color:#fff!important;color:#fff!important;padding:0.6rem 1.5rem;border-radius:50px;font-weight:700!important;transition:all 0.3s!important;}
+  .nav-book:hover{transform:translateY(-1px);box-shadow:0 4px 20px rgba(255,169,77,0.3);}
+  .burger{display:none;cursor:pointer;flex-direction:column;gap:5px;}
+  .burger span{display:block;width:24px;height:2px;background:var(--white);}
+
+  /* HERO */
+  .hero{min-height:100vh;position:relative;display:flex;align-items:flex-end;overflow:hidden;}
+  .hero-image{position:absolute;inset:0;background:url('hero-4eva.jpg') center/cover no-repeat;}
+  .hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(10,10,10,0.95) 0%,rgba(10,10,10,0.4) 50%,rgba(10,10,10,0.2) 100%);}
+  .hero-content{position:relative;z-index:2;padding:3rem 3rem 5rem;max-width:850px;animation:fadeUp 1s ease-out;}
+  .hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.8rem;letter-spacing:3px;text-transform:uppercase;color:var(--rainbow-2);font-weight:600;margin-bottom:1.5rem;}
+  .hero-eyebrow::before{content:'';width:40px;height:2px;background:var(--rainbow-2);}
+  .hero h1{font-family:'Syne',sans-serif;font-size:clamp(3rem,7vw,6rem);font-weight:800;line-height:0.95;letter-spacing:-3px;margin-bottom:1.5rem;}
+  .hero h1 .rainbow-text{background:linear-gradient(90deg,var(--rainbow-1),var(--rainbow-2),var(--rainbow-3),var(--rainbow-4),var(--rainbow-5),var(--rainbow-6));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-size:200% auto;animation:rainbowShift 4s linear infinite;}
+  @keyframes rainbowShift{0%{background-position:0% center;}100%{background-position:200% center;}}
+  .hero-sub{font-size:1.15rem;color:rgba(255,255,255,0.7);max-width:550px;line-height:1.75;margin-bottom:2.5rem;font-weight:300;}
+  .hero-actions{display:flex;gap:1rem;flex-wrap:wrap;}
+  .btn{padding:1rem 2.2rem;border-radius:60px;font-family:'Space Grotesk',sans-serif;font-weight:600;font-size:0.95rem;text-decoration:none;cursor:pointer;border:none;transition:all 0.3s ease;display:inline-flex;align-items:center;gap:0.6rem;}
+  .btn-whatsapp{background:#25D366;color:#fff;box-shadow:0 4px 20px rgba(37,211,102,0.3);}
+  .btn-whatsapp:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(37,211,102,0.4);}
+  .btn-ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,0.2);}
+  .btn-ghost:hover{border-color:rgba(255,255,255,0.5);background:rgba(255,255,255,0.05);}
+  .hero-stats{display:flex;gap:3rem;margin-top:4rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.08);}
+  .hero-stat-num{font-family:'Syne',sans-serif;font-size:2.5rem;font-weight:800;background:linear-gradient(90deg,var(--rainbow-2),var(--rainbow-1));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .hero-stat-label{font-size:0.8rem;color:var(--gray);text-transform:uppercase;letter-spacing:1.5px;margin-top:0.2rem;}
+
+  /* SECTION COMMONS */
+  .section-label{font-size:0.75rem;letter-spacing:4px;text-transform:uppercase;color:var(--rainbow-1);font-weight:700;margin-bottom:1rem;display:block;}
+  .section-title{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3.5rem);font-weight:800;letter-spacing:-2px;margin-bottom:1rem;line-height:1.05;}
+  .section-desc{color:var(--gray);font-size:1.05rem;max-width:520px;line-height:1.7;margin-bottom:4rem;}
+
+  /* VEHICLES */
+  .vehicles{padding:7rem 3rem;background:var(--light-bg);color:var(--black);}
+  .vehicles-header{text-align:center;margin-bottom:4rem;}
+  .vehicles-header .section-desc{margin:0 auto 4rem;}
+  .vehicles-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;max-width:1100px;margin:0 auto;}
+  .vehicle-card{background:var(--white);border-radius:20px;overflow:hidden;transition:all 0.4s;}
+  .vehicle-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(0,0,0,0.1);}
+  .vehicle-photo{height:300px;position:relative;overflow:hidden;}
+  .vehicle-photo img{width:100%;height:100%;object-fit:cover;transition:transform 0.6s ease;}
+  .vehicle-card:hover .vehicle-photo img{transform:scale(1.05);}
+  .vehicle-badge{position:absolute;top:1rem;right:1rem;padding:0.35rem 1rem;background:rgba(0,0,0,0.6);backdrop-filter:blur(10px);border-radius:50px;color:#fff;font-size:0.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+  .vehicle-body{padding:2rem;}
+  .vehicle-body h3{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:700;margin-bottom:0.5rem;letter-spacing:-0.5px;}
+  .vehicle-body p{color:var(--gray);font-size:0.95rem;line-height:1.7;margin-bottom:1.2rem;}
+  .vehicle-specs{display:flex;gap:1rem;flex-wrap:wrap;}
+  .vspec{display:flex;align-items:center;gap:0.4rem;font-size:0.85rem;font-weight:500;color:var(--black);background:var(--light-bg);padding:0.4rem 0.8rem;border-radius:8px;}
+
+  /* TOURS */
+  .tours{padding:7rem 3rem;background:var(--black);position:relative;overflow:hidden;}
+  .tours::before{content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;border-radius:50%;background:var(--rainbow-2);opacity:0.03;filter:blur(80px);}
+  .tours-header{text-align:center;margin-bottom:4rem;position:relative;z-index:2;}
+  .tours-header .section-title{color:#fff;}
+  .tours-header .section-desc{color:rgba(255,255,255,0.6);margin:0 auto;}
+  .tours-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem;max-width:1200px;margin:0 auto;position:relative;z-index:2;}
+  .tour-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;transition:all 0.4s;position:relative;}
+  .tour-card:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.15);transform:translateY(-4px);}
+  .tour-card-top{padding:2rem 2rem 0;position:relative;}
+  .tour-icon{font-size:1.8rem;margin-bottom:0.8rem;display:block;width:48px;height:48px;border-radius:12px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;}
+  .tour-name{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:700;margin-bottom:0.3rem;}
+  .tour-tagline{font-size:0.85rem;color:var(--rainbow-3);font-weight:500;letter-spacing:0.5px;margin-bottom:1rem;}
+  .tour-desc{color:rgba(255,255,255,0.6);font-size:0.9rem;line-height:1.7;margin-bottom:1.5rem;}
+  .tour-highlights{display:flex;flex-wrap:wrap;gap:0.5rem;margin-bottom:1.5rem;}
+  .hl{padding:0.3rem 0.8rem;background:rgba(255,255,255,0.06);border-radius:50px;font-size:0.75rem;color:rgba(255,255,255,0.7);}
+  .tour-card-bottom{padding:1.2rem 2rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;justify-content:space-between;align-items:center;}
+  .tour-duration{font-size:0.85rem;color:rgba(255,255,255,0.5);}
+  .tour-price{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;}
+  .tour-price small{font-size:0.7rem;color:rgba(255,255,255,0.4);font-weight:400;font-family:'Space Grotesk',sans-serif;}
+  .tour-badge{position:absolute;top:1.5rem;right:1.5rem;padding:0.3rem 0.8rem;border-radius:50px;font-size:0.7rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;}
+  .badge-pop{background:var(--rainbow-1);color:#fff;}
+  .badge-prem{background:var(--rainbow-3);color:var(--black);}
+
+  /* WHY US */
+  .why{padding:7rem 3rem;background:var(--light-bg);color:var(--black);}
+  .why-header{text-align:center;margin-bottom:4rem;}
+  .why-header .section-desc{margin:0 auto;}
+  .why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;max-width:1100px;margin:0 auto;}
+  .why-card{padding:2.5rem 2rem;background:var(--white);border-radius:16px;transition:all 0.3s;border:1px solid rgba(0,0,0,0.04);position:relative;overflow:hidden;}
+  .why-card::after{content:'';position:absolute;bottom:0;left:0;width:100%;height:4px;background:linear-gradient(90deg,var(--rainbow-1),var(--rainbow-2));opacity:0;transition:opacity 0.3s;}
+  .why-card:hover{transform:translateY(-4px);box-shadow:0 10px 40px rgba(0,0,0,0.06);}
+  .why-card:hover::after{opacity:1;}
+  .why-card h3{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:700;margin-bottom:0.5rem;}
+  .why-card p{color:var(--gray);font-size:0.9rem;line-height:1.7;}
+
+  /* REVIEWS */
+  .reviews{padding:7rem 3rem;background:var(--black);}
+  .reviews-header{text-align:center;margin-bottom:4rem;}
+  .reviews-header .section-title{color:#fff;}
+  .reviews-header .section-desc{color:rgba(255,255,255,0.6);margin:0 auto;}
+  .reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;max-width:1100px;margin:0 auto;}
+  .review-card{padding:2rem;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:16px;transition:all 0.3s;}
+  .review-card:hover{background:rgba(255,255,255,0.06);transform:translateY(-3px);}
+  .review-stars{color:var(--rainbow-2);font-size:1rem;letter-spacing:2px;margin-bottom:1rem;}
+  .review-text{font-size:0.95rem;line-height:1.75;color:rgba(255,255,255,0.7);margin-bottom:1.5rem;font-style:italic;}
+  .review-author{font-weight:700;font-size:0.85rem;}
+  .review-source{font-size:0.75rem;color:var(--gray);margin-top:0.15rem;}
+
+  /* CTA */
+  .cta{padding:8rem 3rem;background:var(--black);text-align:center;position:relative;overflow:hidden;}
+  .cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:700px;height:700px;border-radius:50%;background:var(--rainbow-2);opacity:0.04;filter:blur(100px);}
+  .cta-inner{position:relative;z-index:2;max-width:650px;margin:0 auto;}
+  .cta h2{font-family:'Syne',sans-serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:800;letter-spacing:-2px;margin-bottom:1rem;line-height:1.05;}
+  .cta h2 .rainbow-text{background:linear-gradient(90deg,var(--rainbow-1),var(--rainbow-2),var(--rainbow-3),var(--rainbow-4),var(--rainbow-5));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+  .cta p{color:rgba(255,255,255,0.6);font-size:1.1rem;margin-bottom:2.5rem;line-height:1.6;}
+  .whatsapp-big{display:inline-flex;align-items:center;gap:0.8rem;padding:1.2rem 3rem;background:#25D366;color:#fff;border-radius:60px;font-size:1.15rem;font-weight:700;text-decoration:none;font-family:'Space Grotesk',sans-serif;box-shadow:0 4px 30px rgba(37,211,102,0.3);transition:all 0.3s;}
+  .whatsapp-big:hover{transform:translateY(-3px);box-shadow:0 8px 40px rgba(37,211,102,0.4);}
+  .whatsapp-big svg{width:24px;height:24px;fill:currentColor;}
+  .contact-row{margin-top:2.5rem;display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap;}
+  .contact-item{color:rgba(255,255,255,0.5);font-size:0.9rem;display:flex;align-items:center;gap:0.5rem;}
+  .contact-item a{color:inherit;text-decoration:none;transition:color 0.3s;}
+  .contact-item a:hover{color:#fff;}
+
+  footer{padding:2rem 3rem;border-top:1px solid rgba(255,255,255,0.05);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+  footer p{font-size:0.8rem;color:rgba(255,255,255,0.3);}
+  .footer-links{display:flex;gap:1.5rem;}
+  .footer-links a{color:rgba(255,255,255,0.3);text-decoration:none;font-size:0.8rem;transition:color 0.3s;}
+  .footer-links a:hover{color:var(--rainbow-2);}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(40px);}to{opacity:1;transform:translateY(0);}}
+  .reveal{opacity:0;transform:translateY(30px);transition:all 0.8s cubic-bezier(0.25,0.46,0.45,0.94);}
+  .reveal.visible{opacity:1;transform:translateY(0);}
+
+  @media(max-width:900px){.vehicles-grid{grid-template-columns:1fr;}}
+  @media(max-width:768px){nav{padding:1rem 1.5rem;}.nav-links{display:none;}.burger{display:flex;}.hero-content{padding:2rem 1.5rem 4rem;}.hero-stats{gap:1.5rem;flex-wrap:wrap;}.hero-stat-num{font-size:2rem;}.vehicles,.tours,.why,.reviews,.cta{padding:5rem 1.5rem;}.tours-grid{grid-template-columns:1fr;}.hero-actions{flex-direction:column;}.btn{text-align:center;justify-content:center;}.contact-row{flex-direction:column;align-items:center;}}
+</style>
+</head>
+<body>
+
+<div class="rainbow-line"></div>
+
+<nav id="navbar">
+  <a href="#" class="logo">4<span>EVA</span> Tours</a>
+  <ul class="nav-links">
+    <li><a href="#vehicles">Our Fleet</a></li>
+    <li><a href="#tours">Tours</a></li>
+    <li><a href="#why">Why Us</a></li>
+    <li><a href="#reviews">Reviews</a></li>
+    <li><a href="https://wa.me/351919368826?text=Hi!%20I'd%20like%20to%20book%20a%20tour%20in%20Lisbon" class="nav-book">Book Now</a></li>
+  </ul>
+  <div class="burger"><span></span><span></span><span></span></div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-image"></div>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Lisbon, Portugal</div>
+    <h1>See Lisbon<br><span class="rainbow-text">Like a Local</span></h1>
+    <p class="hero-sub">This isn't just a tour. It's a ride through centuries of history, hidden viewpoints the guidebooks miss, and stories only a local can tell. Choose a tuk-tuk or a vintage car — your Lisbon adventure starts here.</p>
+    <div class="hero-actions">
+      <a href="https://wa.me/351919368826?text=Hi!%20I'd%20like%20to%20book%20a%20tour%20in%20Lisbon" class="btn btn-whatsapp">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Book via WhatsApp
+      </a>
+      <a href="#tours" class="btn btn-ghost">Explore Our Tours</a>
+    </div>
+    <div class="hero-stats">
+      <div><div class="hero-stat-num">5+</div><div class="hero-stat-label">Years in Lisbon</div></div>
+      <div><div class="hero-stat-num">5.0</div><div class="hero-stat-label">TripAdvisor</div></div>
+      <div><div class="hero-stat-num">6</div><div class="hero-stat-label">Languages</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- VEHICLES — REAL PHOTOS -->
+<section id="vehicles" class="vehicles">
+  <div class="vehicles-header reveal">
+    <span class="section-label">Choose Your Ride</span>
+    <div class="section-title">Two ways to explore Lisbon.</div>
+    <p class="section-desc">Whether you want the open-air thrill of a tuk-tuk or the classic elegance of a vintage car — both deliver an unforgettable adventure.</p>
+  </div>
+  <div class="vehicles-grid">
+    <div class="vehicle-card reveal">
+      <div class="vehicle-photo">
+        <img src="tuktuk.jpg" alt="4EVA Tours flower-decorated electric tuk-tuk at Padrão dos Descobrimentos, Lisbon">
+        <span class="vehicle-badge">Most Popular</span>
+      </div>
+      <div class="vehicle-body">
+        <h3>The Tuk-Tuk</h3>
+        <p>Our flower-decorated electric tuk-tuk is the most fun way to navigate Lisbon's narrow cobblestone streets. Super quiet, totally green, and guaranteed to make you smile.</p>
+        <div class="vehicle-specs">
+          <span class="vspec">Up to 6 passengers</span>
+          <span class="vspec">100% Electric</span>
+          <span class="vspec">Eco-friendly</span>
+        </div>
+      </div>
+    </div>
+    <div class="vehicle-card reveal">
+      <div class="vehicle-photo">
+        <img src="vintage-car.jpg" alt="4EVA Tours vintage car at Padrão dos Descobrimentos, Lisbon">
+        <span class="vehicle-badge">Classic Experience</span>
+      </div>
+      <div class="vehicle-body">
+        <h3>The Vintage Car</h3>
+        <p>Step into a piece of automotive history and cruise through Lisbon in style. Our beautifully restored vintage car turns heads everywhere it goes.</p>
+        <div class="vehicle-specs">
+          <span class="vspec">Up to 4 passengers</span>
+          <span class="vspec">Fully restored</span>
+          <span class="vspec">Photo-worthy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOURS -->
+<section id="tours" class="tours">
+  <div class="tours-header">
+    <span class="section-label" style="color:var(--rainbow-3)">Our Adventures</span>
+    <div class="section-title">Every tour tells a story.</div>
+    <p class="section-desc">These aren't just routes on a map. Each tour is a carefully crafted journey through Lisbon's history, culture, flavours and hidden gems — told by someone who lives and breathes this city every day.</p>
+  </div>
+  <div class="tours-grid">
+
+    <div class="tour-card reveal">
+      <div class="tour-card-top">
+        <span class="tour-badge badge-pop">Popular</span>
+        <div class="tour-name">Historic Hills & Alfama</div>
+        <div class="tour-tagline">Where Lisbon's story began</div>
+        <p class="tour-desc">Wind through the medieval labyrinth of Alfama — the oldest neighbourhood in the city. Visit the São Jorge Castle viewpoint for panoramic views that will take your breath away. Discover where fado music was born, wander through Mouraria's multicultural streets, and hear stories of Moorish conquests, earthquakes, and resilience.</p>
+        <div class="tour-highlights">
+          <span class="hl">Alfama</span><span class="hl">São Jorge Castle</span><span class="hl">Fado district</span><span class="hl">Mouraria</span><span class="hl">Graça viewpoint</span>
+        </div>
+      </div>
+      <div class="tour-card-bottom">
+        <span class="tour-duration">2 hours</span>
+        <span class="tour-price">€190 <small>/ vehicle</small></span>
+      </div>
+    </div>
+
+    <div class="tour-card reveal">
+      <div class="tour-card-top">
+        <div class="tour-name">Historic Hills — Express</div>
+        <div class="tour-tagline">The essential highlights, fast-tracked</div>
+        <p class="tour-desc">Short on time? Get the best of Alfama and Lisbon's historic centre in one power-packed hour. Hit the top viewpoints, snap stunning photos, and get a taste of the city's soul — all before lunch.</p>
+        <div class="tour-highlights">
+          <span class="hl">Alfama</span><span class="hl">Top viewpoints</span><span class="hl">Quick & fun</span>
+        </div>
+      </div>
+      <div class="tour-card-bottom">
+        <span class="tour-duration">1 hour</span>
+        <span class="tour-price">€100 <small>/ vehicle</small></span>
+      </div>
+    </div>
+
+    <div class="tour-card reveal">
+      <div class="tour-card-top">
+        <span class="tour-badge badge-pop">Popular</span>
+        <div class="tour-name">Bohemian Lisbon</div>
+        <div class="tour-tagline">Art, soul & the best sunsets</div>
+        <p class="tour-desc">Explore the artistic, creative side of Lisbon. Cruise through Bairro Alto's graffiti-lined streets, discover Chiado's literary cafés, stop at Príncipe Real's leafy garden, and catch golden hour at the most stunning miradouros in the city. This is the Lisbon that locals love.</p>
+        <div class="tour-highlights">
+          <span class="hl">Bairro Alto</span><span class="hl">Chiado</span><span class="hl">Príncipe Real</span><span class="hl">Street art</span><span class="hl">Miradouros</span>
+        </div>
+      </div>
+      <div class="tour-card-bottom">
+        <span class="tour-duration">2 hours</span>
+        <span class="tour-price">€190 <small>/ vehicle</small></span>
+      </div>
+    </div>
+
+    <div class="tour-card reveal">
+      <div class="tour-card-top">
+        <div class="tour-name">Bohemian Lisbon — Express</div>
+        <div class="tour-tagline">Creative vibes in a flash</div>
+        <p class="tour-desc">A quick but packed ride through Lisbon's bohemian heart. Street art, panoramic viewpoints, and the vibe of Bairro Alto — distilled into one unforgettable hour.</p>
+        <div class="tour-highlights">
+          <span class="hl">Bairro Alto</span><span class="hl">Viewpoints</span><span class="hl">Street art</span>
+        </div>
+      </div>
+      <div class="tour-card-bottom">
+        <span class="tour-duration">1 hour</span>
+        <span class="tour-price">€100 <small>/ vehicle</small></span>
+      </div>
+    </div>
+
+    <div class="tour-card reveal">
+      <div class="tour-card-top">
+        <span class="tour-badge badge-pop">Popular</span>
+        <div class="tour-name">Belém — Age of Discovery</div>
+        <div class="tour-tagline">UNESCO Heritage & the world's best pastry</div>
+        <p class="tour-desc">Journey to the riverfront district where Portugal's great explorers set sail. Stand before the mighty Jerónimos Monastery and the iconic Tower of Belém, visit the Monument to the Discoveries, and taste the original pastéis de Belém where they've been baked since 1837.</p>
+        <div class="tour-highlights">
+          <span class="hl">Jerónimos Monastery</span><span class="hl">Tower of Belém</span><span class="hl">Pastéis de Belém</span><span class="hl">UNESCO</span>
+        </div>
+      </div>
+      <div class="tour-card-bottom">
+        <span class="tour-duration">2 hours</span>
+        <span class="tour-price">€190 <small>/ vehicle</small></span>
+      </div>
+    </div>
+
+    <div class="tour-card reveal">
+      <div class="tour-card-top">
+        <span class="tour-badge badge-prem">Premium</span>
+        <div class="tour-name">The Grand Tour</div>
+        <div class="tour-tagline">Half day — the complete Lisbon experience</div>
+        <p class="tour-desc">Why choose one when you can have it all? This half-day adventure combines the highlights of all our routes into one epic journey. Historic Alfama, bohemian Bairro Alto, majestic Belém — plus hidden gems and local food stops only we know about.</p>
+        <div class="tour-highlights">
+          <span class="hl">All neighbourhoods</span><span class="hl">Food stops</span><span class="hl">Hidden gems</span><span class="hl">Photo spots</span>
+        </div>
+      </div>
+      <div class="tour-card-bottom">
+        <span class="tour-duration">4 hours</span>
+        <span class="tour-price">€350 <small>/ vehicle</small></span>
+      </div>
+    </div>
+
+    <div class="tour-card reveal">
+      <div class="tour-card-top">
+        <span class="tour-badge badge-prem">Exclusive</span>
+        <div class="tour-name">Full Day Adventure</div>
+        <div class="tour-tagline">Lisbon, truly yours for a whole day</div>
+        <p class="tour-desc">A completely customized full-day experience. Explore every corner of Lisbon at your own pace — from sunrise viewpoints to sunset cocktails. Includes local restaurant recommendations, pastry tastings, and secret spots that even many locals don't know.</p>
+        <div class="tour-highlights">
+          <span class="hl">Fully customized</span><span class="hl">All areas</span><span class="hl">Restaurant picks</span><span class="hl">VIP treatment</span>
+        </div>
+      </div>
+      <div class="tour-card-bottom">
+        <span class="tour-duration">Full day</span>
+        <span class="tour-price">€500 <small>/ vehicle</small></span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- WHY US -->
+<section id="why" class="why">
+  <div class="why-header reveal">
+    <span class="section-label">The 4EVA Difference</span>
+    <div class="section-title">More than a tour.<br>An experience you'll never forget.</div>
+    <p class="section-desc">We've been showing people the real Lisbon for years. Here's what makes us different.</p>
+  </div>
+  <div class="why-grid">
+    <div class="why-card reveal"><h3>100% Private</h3><p>No strangers, no shared tours. It's just you, your group, and your personal guide. Your tour, your pace.</p></div>
+    <div class="why-card reveal"><h3>Local Knowledge</h3><p>We don't read from a script. We live here. Expect insider tips, secret viewpoints, and restaurant picks you won't find on Google.</p></div>
+    <div class="why-card reveal"><h3>Family Friendly</h3><p>Kids love our tours. Fun quizzes, challenges, and storytelling that keeps the whole family engaged.</p></div>
+    <div class="why-card reveal"><h3>6 Languages</h3><p>We guide in Turkish, English, Portuguese, French, German, and Spanish. Everyone feels at home.</p></div>
+    <div class="why-card reveal"><h3>Photo Stops</h3><p>We know every angle, every golden hour spot, every hidden miradouro. Your camera roll will thank you.</p></div>
+    <div class="why-card reveal"><h3>Free Cancellation</h3><p>Plans change — we get it. Cancel up to 24 hours before your tour for a full refund.</p></div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section id="reviews" class="reviews">
+  <div class="reviews-header reveal">
+    <span class="section-label" style="color:var(--rainbow-2)">Guest Stories</span>
+    <div class="section-title">Don't take our word for it.</div>
+    <p class="section-desc">Here's what adventurers from around the world say about their 4EVA experience.</p>
+  </div>
+  <div class="reviews-grid">
+    <div class="review-card reveal">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Fantastic tuktuk visit! Super engaging and fun — took us to the best spots and recommended amazing places to eat. 100% would use again!"</p>
+      <div class="review-author">Happy Visitor</div>
+      <div class="review-source">TripAdvisor</div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"The best rainbow Tuk-Tuk in Lisbon! Involved our 11-year-old daughter in the tour with quizzes and challenges. A great storyteller who makes driving look easy!"</p>
+      <div class="review-author">Family from Germany</div>
+      <div class="review-source">TripAdvisor</div>
+    </div>
+    <div class="review-card reveal">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Electric tuk-tuk was super quiet — perfect English, all the history, and stunning viewpoints. 10/10 would recommend to everyone visiting Lisbon."</p>
+      <div class="review-author">Ben from San Francisco</div>
+      <div class="review-source">TripAdvisor</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="contact" class="cta">
+  <div class="cta-glow"></div>
+  <div class="cta-inner reveal">
+    <h2>Ready to see the<br><span class="rainbow-text">real Lisbon?</span></h2>
+    <p>Send us a message on WhatsApp and we'll plan your perfect adventure. It takes 30 seconds to book — and you can cancel free up to 24h before.</p>
+    <a href="https://wa.me/351919368826?text=Hi!%20I'd%20like%20to%20book%20a%20tour%20in%20Lisbon" class="whatsapp-big">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Book via WhatsApp
+    </a>
+    <div class="contact-row">
+      <div class="contact-item"><a href="tel:+351919368826">+351 919 368 826</a></div>
+      <div class="contact-item">Lisbon, Portugal</div>
+      <div class="contact-item"><a href="https://www.tripadvisor.com/Attraction_Review-g189158-d21248056-Reviews-4EVA_TOURS-Lisbon_Lisbon_District_Central_Portugal.html" target="_blank">See us on TripAdvisor</a></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>© 2026 4EVA Tours — Lisbon, Portugal</p>
+  <div class="footer-links">
+    <a href="#">Instagram</a>
+    <a href="https://www.tripadvisor.com/Attraction_Review-g189158-d21248056-Reviews-4EVA_TOURS-Lisbon_Lisbon_District_Central_Portugal.html" target="_blank">TripAdvisor</a>
+    <a href="https://wa.me/351919368826">WhatsApp</a>
+  </div>
+</footer>
+
+<script>
+  const reveals=document.querySelectorAll('.reveal');
+  const observer=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible');});},{threshold:0.1});
+  reveals.forEach(el=>observer.observe(el));
+  window.addEventListener('scroll',()=>{document.getElementById('navbar').classList.toggle('nav-scrolled',window.scrollY>60);});
+</script>
+
+</body>
+</html>
